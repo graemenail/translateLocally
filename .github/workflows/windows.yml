@@ -23,38 +23,38 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Download MKL
-      run: |
-        # Wget retries downloading files and is faster than Invoke-WebRequest
-        C:\msys64\usr\bin\wget.exe -nv ${{ env.MKL_URL }} -O mkl.zip
-        Expand-Archive -Force mkl.zip ${{ github.workspace }}\mkl
-        # Set MKLROOT environment variable so that CMake can find MKL
-        echo "MKLROOT=${{ github.workspace }}\mkl" | Out-File -FilePath $env:GITHUB_ENV  -Encoding utf8 -Append
-      shell: powershell
+#     - name: Download MKL
+#       run: |
+#         # Wget retries downloading files and is faster than Invoke-WebRequest
+#         C:\msys64\usr\bin\wget.exe -nv ${{ env.MKL_URL }} -O mkl.zip
+#         Expand-Archive -Force mkl.zip ${{ github.workspace }}\mkl
+#         # Set MKLROOT environment variable so that CMake can find MKL
+#         echo "MKLROOT=${{ github.workspace }}\mkl" | Out-File -FilePath $env:GITHUB_ENV  -Encoding utf8 -Append
+#       shell: powershell
 
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@main
       with:
-        vcpkgArguments: protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
-        vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da 
+        vcpkgArguments: "protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations"
+        vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
         vcpkgDirectory: ${{ github.workspace }}/vcpkg/
         vcpkgTriplet: x64-windows-static
 
-    # Windows CPU only minimal build
-    - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
-      uses: lukka/run-cmake@main
-      with: # At the moment VS builds a debug build because it is supposed to take the argument configurationType from CMakeLists.json https://github.com/microsoft/vscode-cmake-tools/issues/1298
-        buildDirectory: ${{ github.workspace }}/build # but ninja is broken for us at the moment due to https://github.com/lukka/run-cmake/issues/47#issuecomment-828942167
-        cmakeAppendedArgs: '-G "Visual Studio 16 2019" -A x64
-          -DconfigurationType="Release"
-          -DCMAKE_BUILD_TYPE="Release"'
-        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-        cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
-        useVcpkgToolchainFile: true
-        cmakeBuildType: Release
+#     # Windows CPU only minimal build
+#     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
+#       uses: lukka/run-cmake@main
+#       with: # At the moment VS builds a debug build because it is supposed to take the argument configurationType from CMakeLists.json https://github.com/microsoft/vscode-cmake-tools/issues/1298
+#         buildDirectory: ${{ github.workspace }}/build # but ninja is broken for us at the moment due to https://github.com/lukka/run-cmake/issues/47#issuecomment-828942167
+#         cmakeAppendedArgs: '-G "Visual Studio 16 2019" -A x64
+#           -DconfigurationType="Release"
+#           -DCMAKE_BUILD_TYPE="Release"'
+#         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+#         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
+#         useVcpkgToolchainFile: true
+#         cmakeBuildType: Release
 
 
-    - name: Print versions
-      working-directory: build/Debug # This is meant to be changed to release, but currently the generator is broken.
-      run: ./translateLocally --version
-      shell: cmd
+#     - name: Print versions
+#       working-directory: build/Debug # This is meant to be changed to release, but currently the generator is broken.
+#       run: ./translateLocally --version
+#       shell: cmd
