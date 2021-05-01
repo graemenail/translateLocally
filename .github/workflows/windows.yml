@@ -35,7 +35,8 @@ jobs:
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@main
       with:
-        vcpkgArguments: "protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations"
+#         vcpkgArguments: "protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations"
+        vcpkgArguments: qt5-base
         vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
         vcpkgDirectory: ${{ github.workspace }}/vcpkg/
         vcpkgTriplet: x64-windows-static
