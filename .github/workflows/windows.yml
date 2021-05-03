@@ -39,13 +39,24 @@ jobs:
         setupOnly: true
         # vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
         vcpkgGitCommitId: 44d94c2edbd44f0c01d66c2ad95eb6982a9a61bc
-        vcpkgDirectory: ${{ github.workspace }}/vcpkg/
+        vcpkgDirectory: /vcpkg/
         vcpkgTriplet: x64-windows-static
+
+    - run: |
+        echo "${{ env.VCPKG_ROOT }}\buildtrees\qt5-base\*.log"
 
     - run: |
         $VCPKG_ROOT/vcpkg install qt5-base:x64-windows-static --clean-after-build
       shell: bash
       timeout-minutes: 60
+
+    - name: Upload logs
+      uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: logs
+        path: |
+          ${{ env.VCPKG_ROOT }}\buildtrees\qt5-base\*.log
 
 #     # Windows CPU only minimal build
 #     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
