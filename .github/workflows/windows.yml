@@ -43,7 +43,7 @@ jobs:
         vcpkgTriplet: x64-windows-static
 
     - run: |
-        $VCPKG_ROOT/vcpkg install qt5-base
+        $VCPKG_ROOT/vcpkg install qt5-base:x64-windows-static-release
       shell: bash
       timeout-minutes: 60
 
