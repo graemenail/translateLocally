@@ -37,13 +37,15 @@ jobs:
       with:
 #         vcpkgArguments: "protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations"
         setupOnly: true
-        vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
+        # vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
+        vcpkgGitCommitId: 44d94c2edbd44f0c01d66c2ad95eb6982a9a61bc
         vcpkgDirectory: ${{ github.workspace }}/vcpkg/
         vcpkgTriplet: x64-windows-static
-        
+
     - run: |
         $VCPKG_ROOT/vcpkg install qt5-base
       shell: bash
+      timeout-minutes: 60
 
 #     # Windows CPU only minimal build
 #     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
