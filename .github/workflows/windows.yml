@@ -57,7 +57,7 @@ jobs:
       with:
         name: logs
         path: |
-          ${{ env.VCPKG_ROOT }}\buildtrees\qt5-base\*.log
+          ${{ env.VCPKG_ROOT }}\buildtrees\**\*.log
 
     # Windows CPU only minimal build
     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
