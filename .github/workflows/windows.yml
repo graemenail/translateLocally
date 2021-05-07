@@ -44,6 +44,7 @@ jobs:
 
     - name: Update ports
       run: $VCPKG_ROOT/vcpkg update
+      shell: bash
 
     - run: |
         $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
