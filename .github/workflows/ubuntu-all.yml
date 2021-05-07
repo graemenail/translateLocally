@@ -35,7 +35,9 @@ jobs:
         submodules: recursive
     
     - name: Dependencies  # @TODO should also test qt6, but it's not present yet
-      run: sudo apt-get install xvfb libpcre++-dev qttools5-dev qtbase5-dev libarchive-dev ${{ matrix.extradeps }}
+      run: |
+       sudo apt-get update
+       sudo apt-get install -y xvfb libpcre++-dev qttools5-dev qtbase5-dev libarchive-dev ${{ matrix.extradeps }}
       
       # https://software.intel.com/content/www/us/en/develop/articles/installing-intel-free-libs-and-python-apt-repo.html
     - name: Install MKL
@@ -58,7 +60,7 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX=/usr
 
     - name: Build
       working-directory: ${{github.workspace}}/build
@@ -70,3 +72,11 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: xvfb-run --auto-servernum ./translateLocally --version # Can't run normally due to not having X server set up
+
+    - name: Package # Produce a .deb file using cpack
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: |
+        cpack
+        ls deb/*.deb
+        dpkg -I deb/*.deb
