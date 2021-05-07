@@ -42,18 +42,21 @@ jobs:
         vcpkgDirectory: /vcpkg/
         # vcpkgTriplet: x64-windows-static
 
+    - name: Update ports
+      run: $VCPKG_ROOT/vcpkg update
+
     - run: |
         $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
            protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
       shell: bash
 
-    # - name: Upload logs
-    #   uses: actions/upload-artifact@v2
-    #   if: ${{ always() }}
-    #   with:
-    #     name: logs
-    #     path: |
-    #       ${{ env.VCPKG_ROOT }}\buildtrees\qt5-base\*.log
+    - name: Upload logs
+      uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: logs
+        path: |
+          ${{ env.VCPKG_ROOT }}\buildtrees\qt5-base\*.log
 
     # Windows CPU only minimal build
     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
