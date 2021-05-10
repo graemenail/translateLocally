@@ -49,16 +49,15 @@ jobs:
     #   run: $VCPKG_ROOT/vcpkg update
     #   shell: bash
 
-
-- name: Nuget
-  run: >
-    `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1`
-          sources add
-          -source "https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY }}/index.json"
-          -storepasswordincleartext
-          -name "GitHub"
-          -username "Test?"
-          -password "${{ secrets.GITHUB_TOKEN }}"
+    - name: Nuget
+      run: >
+        `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1`
+              sources add
+              -source "https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY }}/index.json"
+              -storepasswordincleartext
+              -name "GitHub"
+              -username "Test?"
+              -password "${{ secrets.GITHUB_TOKEN }}"
 
 - run: |
         $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
