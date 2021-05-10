@@ -64,7 +64,7 @@ jobs:
           -source "https://nuget.pkg.github.com/${{ github.repository }}/index.json"
           -storepasswordincleartext
           -name "GitHub"
-          -username "Test?"
+          -username "${{ github.repository_owner }}"
           -password "${{ secrets.GITHUB_TOKEN }}"
 
     - run: |
@@ -72,10 +72,10 @@ jobs:
               protobuf pcre2 zlib libarchive
       shell: bash
 
-    - run: |
-        $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
-           protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
-      shell: bash
+    # - run: |
+    #     $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
+    #        protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
+    #   shell: bash
 
     - name: Upload logs
       uses: actions/upload-artifact@v2
