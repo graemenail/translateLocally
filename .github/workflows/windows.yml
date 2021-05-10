@@ -59,7 +59,7 @@ jobs:
       shell: bash
 
     - name: Nuget
-      run: > ${{ steps.nuget.outsputs.path }} sources add
+      run: > ${{ steps.nuget.outputs.path }} sources add
               -source "https://nuget.pkg.github.com/${{ github.repository }}/index.json"
               -storepasswordincleartext
               -name "GitHub"
