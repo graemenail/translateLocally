@@ -61,7 +61,7 @@ jobs:
     - name: Nuget
       run: >
           ${{ steps.nuget.outputs.path }} sources add
-          -source "https://nuget.pkg.github.com/${{ github.repository }}/index.json"
+          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
           -storepasswordincleartext
           -name "GitHub"
           -username "${{ github.repository_owner }}"
