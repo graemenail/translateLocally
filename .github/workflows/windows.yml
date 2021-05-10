@@ -68,7 +68,7 @@ jobs:
 
     - run: |
             $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
-              zlib
+              protobuf pcre2 zlib libarchive
       shell: bash
 
     # - run: |
