@@ -68,7 +68,7 @@ jobs:
           -password "${{ secrets.GITHUB_TOKEN }}"
 
     - run: |
-            $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
+            $VCPKG_ROOT/vcpkg --debug install --triplet x64-windows-static --clean-after-build \
               protobuf pcre2 zlib libarchive
       shell: bash
 
