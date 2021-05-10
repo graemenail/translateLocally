@@ -50,11 +50,8 @@ jobs:
     #   run: $VCPKG_ROOT/vcpkg update
     #   shell: bash
 
-    - name: Fetch Nuget
-      run: $VCPKG_ROOT/vcpkg fetch nuget
-      shell: bash
 
-    - name: Nuget Path
+    - name: Fetch Nuget
       run: echo "::set-output name=path::$($VCPKG_ROOT/vcpkg fetch nuget | tail -n1)"
       id: nuget
       shell: bash
@@ -69,8 +66,8 @@ jobs:
           -password "${{ secrets.GITHUB_TOKEN }}"
 
     - run: |
-            $VCPKG_ROOT/vcpkg --debug install --triplet x64-windows-static --clean-after-build \
-              protobuf pcre2 zlib libarchive
+            $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
+              zlib
       shell: bash
 
     # - run: |
