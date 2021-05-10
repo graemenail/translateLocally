@@ -53,14 +53,10 @@ jobs:
       run: $VCPKG_ROOT/vcpkg fetch nuget
       shell: bash
 
-    - name: Nuget Path
-      run: $VCPKG_ROOT/vcpkg fetch nuget | tail -n1
-      shell: bash
 
     - name: Nuget
-      shell: bash
       run: >
-        `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1`
+        C:\ProgramData\Chocolatey\bin\nuget.exe
               sources add
               -source "https://nuget.pkg.github.com/${{ github.repository }}/index.json"
               -storepasswordincleartext
