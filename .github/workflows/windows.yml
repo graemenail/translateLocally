@@ -51,6 +51,7 @@ jobs:
 
     - name: Fetch Nuget
       run: $VCPKG_ROOT/vcpkg fetch nuget
+      shell: bash
 
     - name: Nuget
       run: >
