@@ -67,15 +67,11 @@ jobs:
           -username "${{ github.repository_owner }}"
           -password "${{ secrets.GITHUB_TOKEN }}"
 
-    - run: |
+    - name: Install dependencies
+      run: |
             $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
-              protobuf pcre2 zlib libarchive
+              protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
       shell: bash
-
-    # - run: |
-    #     $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
-    #        protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
-    #   shell: bash
 
     - name: Upload logs
       uses: actions/upload-artifact@v2
