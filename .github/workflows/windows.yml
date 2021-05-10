@@ -54,8 +54,8 @@ jobs:
       shell: bash
 
     - name: Nuget Path
-        run: $VCPKG_ROOT/vcpkg fetch nuget | tail -n1
-        shell: bash
+      run: $VCPKG_ROOT/vcpkg fetch nuget | tail -n1
+      shell: bash
 
     - name: Nuget
       shell: bash
