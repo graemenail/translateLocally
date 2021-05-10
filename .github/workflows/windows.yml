@@ -17,6 +17,9 @@ jobs:
     runs-on: windows-2019
     name: ${{ matrix.name }}
 
+    env:
+      VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -42,14 +45,30 @@ jobs:
         vcpkgDirectory: /vcpkg/
         # vcpkgTriplet: x64-windows-static
 
-    - name: Update ports
-      run: $VCPKG_ROOT/vcpkg update
-      shell: bash
+    # - name: Update ports
+    #   run: $VCPKG_ROOT/vcpkg update
+    #   shell: bash
 
-    - run: |
+
+- name: Nuget
+  run: >
+    `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1`
+          sources add
+          -source "https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY }}/index.json"
+          -storepasswordincleartext
+          -name "GitHub"
+          -username "Test?"
+          -password "${{ secrets.GITHUB_TOKEN }}"
+
+- run: |
         $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
-           protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
-      shell: bash
+           protobuf pcre2 zlib libarchive
+  shell: bash
+
+    # - run: |
+    #     $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build \
+    #        protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations
+    #   shell: bash
 
     - name: Upload logs
       uses: actions/upload-artifact@v2
