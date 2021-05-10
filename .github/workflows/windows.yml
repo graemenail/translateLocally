@@ -54,6 +54,7 @@ jobs:
       shell: bash
 
     - name: Nuget
+      shell: bash
       run: >
         `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1`
               sources add
