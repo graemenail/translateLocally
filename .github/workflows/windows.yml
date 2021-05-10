@@ -53,11 +53,13 @@ jobs:
       run: $VCPKG_ROOT/vcpkg fetch nuget
       shell: bash
 
+    - name: Nuget Path
+      run: echo "::set-output name=path::$($VCPKG_ROOT/vcpkg fetch nuget | tail -n1)"
+      id: nuget
+      shell: bash
 
     - name: Nuget
-      run: >
-        C:\ProgramData\Chocolatey\bin\nuget.exe
-              sources add
+      run: > ${{ steps.nuget.outsputs.path }} sources add
               -source "https://nuget.pkg.github.com/${{ github.repository }}/index.json"
               -storepasswordincleartext
               -name "GitHub"
