@@ -53,10 +53,14 @@ jobs:
       run: $VCPKG_ROOT/vcpkg fetch nuget
       shell: bash
 
+    - name: Nuget Path
+        run: $VCPKG_ROOT/vcpkg fetch nuget | tail -n1
+        shell: bash
+
     - name: Nuget
       shell: bash
       run: >
-        `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1`
+        `$VCPKG_ROOT/vcpkg fetch nuget | tail -n 1` \
               sources add
               -source "https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY }}/index.json"
               -storepasswordincleartext
