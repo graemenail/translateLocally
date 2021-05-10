@@ -53,12 +53,12 @@ jobs:
     #   shell: bash
 
 
-    - name: Fetch Nuget
+    - name: Fetch NuGet
       run: echo "::set-output name=path::$($VCPKG_ROOT/vcpkg fetch nuget | tail -n1)"
       id: nuget
       shell: bash
 
-    - name: Nuget
+    - name: Setup NuGet
       run: >
           ${{ steps.nuget.outputs.path }} sources add
           -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
