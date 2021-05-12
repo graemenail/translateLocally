@@ -2,19 +2,67 @@ name: Windows
 
 on: [push, pull_request]
 
+defaults:
+  runs-on: windows-2019
+
 env:
   MKL_URL: "https://romang.blob.core.windows.net/mariandev/ci/mkl-2020.1-windows-static.zip"
+  VCPKG_SHA: "0bf3923f9fab4001c00f0f429682a0853b5749e0"
 
 jobs:
+  build-deps:
+    strategy:
+      matrix:
+        pkg:
+          - protobuf
+          - pcre2
+          - zlib
+          - libarchive
+          - qt5-base
+          - qt5[essentials]
+          - qt5-tools
+          - qt5-translations
+    name: Build ${{ matrix.pkg }}
+
+    env:
+      VCPKG_BINARY_SOURCES: 'nuget,GitHub,readwrite'
+
+    steps:
+      - name: Prepare vcpkg
+        uses: lukka/run-vcpkg@v7.3
+        with:
+          setupOnly: true
+          doNotCache: true
+          vcpkgGitCommitId: ${{ env.VCPKG_SHA }}
+          vcpkgDirectory: /vcpkg/
+
+      - name: Fetch NuGet
+        run: echo "::set-output name=path::$($VCPKG_ROOT/vcpkg fetch nuget | tail -n1)"
+        id: nuget
+        shell: bash
+
+      - name: Setup NuGet
+        run: >
+            ${{ steps.nuget.outputs.path }} sources add
+            -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+            -storepasswordincleartext
+            -name "GitHub"
+            -username "${{ github.repository_owner }}"
+            -password "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Install ${{ matrix.pkg }}
+        run: |
+              $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build ${{ matrix.pkg }}
+        shell: bash
+
   build-windows:
+    needs: [build-deps]
     strategy:
       matrix:
         include:
           # Windows CPU-only build
           - name: "Windows CPU-only"
             cuda: ""
-
-    runs-on: windows-2019
     name: ${{ matrix.name }}
 
     env:
@@ -44,7 +92,7 @@ jobs:
         doNotCache: true
         # vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
         # vcpkgGitCommitId: 44d94c2edbd44f0c01d66c2ad95eb6982a9a61bc
-        vcpkgGitCommitId: 0bf3923f9fab4001c00f0f429682a0853b5749e0
+        vcpkgGitCommitId: ${{ env.VCPKG_SHA }}
         vcpkgDirectory: /vcpkg/
         # vcpkgTriplet: x64-windows-static
 
@@ -98,3 +146,5 @@ jobs:
     #   working-directory: build/
     #   run: ./translateLocally --version
     #   shell: cmd
+
+# https://github.com/microsoft/vcpkg/blob/master/docs/users/binarycaching.md#nuget-provider-configuration
