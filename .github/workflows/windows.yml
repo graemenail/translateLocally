@@ -2,8 +2,6 @@ name: Windows
 
 on: [push, pull_request]
 
-defaults:
-  runs-on: windows-2019
 
 env:
   MKL_URL: "https://romang.blob.core.windows.net/mariandev/ci/mkl-2020.1-windows-static.zip"
@@ -11,6 +9,7 @@ env:
 
 jobs:
   build-deps:
+    runs-on: windows-2019
     strategy:
       matrix:
         pkg:
@@ -57,6 +56,7 @@ jobs:
 
   build-windows:
     needs: [build-deps]
+    runs-on: windows-2019
     strategy:
       matrix:
         include:
