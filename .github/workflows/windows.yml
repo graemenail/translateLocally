@@ -6,6 +6,7 @@ on: [push, pull_request]
 env:
   MKL_URL: "https://romang.blob.core.windows.net/mariandev/ci/mkl-2020.1-windows-static.zip"
   VCPKG_SHA: "0bf3923f9fab4001c00f0f429682a0853b5749e0"
+  VCPKG_DIR: C:\vcpkg
 
 jobs:
   build-deps:
@@ -41,7 +42,7 @@ jobs:
           setupOnly: true
           doNotCache: true
           vcpkgGitCommitId: ${{ env.VCPKG_SHA }}
-          vcpkgDirectory: /vcpkg/
+          vcpkgDirectory: ${{ env.VCPKG_DIR }}
 
       - name: Fetch NuGet
         run: echo "::set-output name=path::$($VCPKG_ROOT/vcpkg fetch nuget | tail -n1)"
@@ -114,7 +115,7 @@ jobs:
         # vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
         # vcpkgGitCommitId: 44d94c2edbd44f0c01d66c2ad95eb6982a9a61bc
         vcpkgGitCommitId: ${{ env.VCPKG_SHA }}
-        vcpkgDirectory: /vcpkg/
+        vcpkgDirectory: ${{ env.VCPKG_DIR }}
         # vcpkgTriplet: x64-windows-static
 
     # - name: Update ports
