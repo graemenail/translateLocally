@@ -55,6 +55,14 @@ jobs:
               $VCPKG_ROOT/vcpkg install --triplet x64-windows-static --clean-after-build ${{ matrix.pkg }}
         shell: bash
 
+        - name: Upload logs
+          uses: actions/upload-artifact@v2
+          if: ${{ failure() }}
+          with:
+            name: logs-${{ matrix.pkg }}
+            path: |
+              ${{ env.VCPKG_ROOT }}\buildtrees\**\*.log
+
   build-windows:
     needs: [build-deps]
     runs-on: windows-2019
