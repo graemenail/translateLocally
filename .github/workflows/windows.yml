@@ -63,6 +63,11 @@ jobs:
           path: |
             ${{ env.VCPKG_ROOT }}\buildtrees\**\*.log
 
+      - name: Filesystem
+        if: ${{ always() }}
+        run: df -h
+        shell: bash
+
   build-windows:
     needs: [build-deps]
     runs-on: windows-2019
