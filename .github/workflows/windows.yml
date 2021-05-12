@@ -20,7 +20,14 @@ jobs:
           - libarchive
           - qt5-base
           - qt5[essentials]
-          - qt5-tools
+          - qt5-activeqt[core]
+          - qt5-declarative[core]
+          - qt5-imageformats[core]
+          - qt5-multimedia[core]
+          - qt5-networkauth[core]
+          - qt5-quickcontrols2[core]
+          - qt5-svg[core]
+          - qt5-tools[core]
           - qt5-translations
     name: Build ${{ matrix.pkg }}
 
