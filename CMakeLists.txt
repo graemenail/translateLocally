@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(APPLE) # When on MacOS, we have a non-standard libarchive location because we get it via brew
 #  This attempts to fix a bug, but in fact doesn't do anything.
 #  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version")
-  set(LIBARCHIVE_INCLUDE_DIR "/usr/local/opt/libarchive/include")
+  set(LibArchive_INCLUDE_DIR "/usr/local/opt/libarchive/include")
 endif(APPLE)
 #MSVC can't seem to pick up correct flags otherwise:
 if(MSVC)
@@ -48,13 +48,13 @@ message("Building ${PROJECT_NAME}-${PROJECT_VERSION_STRING}")
 #    endif()
 #endif()
 
-find_package(LIBARCHIVE REQUIRED)
+find_package(LibArchive REQUIRED)
 find_package(Threads REQUIRED) # Cross-platform compatible way to get threads?
-if(LIBARCHIVE_FOUND)
-    list (APPEND ${INCLUDE_DIRECTORIES} ${LIBARCHIVE_INCLUDE_DIRS})
-else(LIBARCHIVE_FOUND)
+if(LibArchive_FOUND)
+    list (APPEND ${INCLUDE_DIRECTORIES} ${LibArchive_INCLUDE_DIRS})
+else(LibArchive_FOUND)
   MESSAGE(FATAL_ERROR "Could not find the libarchive library and development files.")
-endif( LIBARCHIVE_FOUND )
+endif( LibArchive_FOUND )
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Gui PrintSupport Widgets LinguistTools Network DBus REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui PrintSupport Widgets LinguistTools Network DBus REQUIRED)
@@ -150,7 +150,7 @@ set(LINK_LIBRARIES
     Qt${QT_VERSION_MAJOR}::DBus
     bergamot-translator
     ${CMAKE_THREAD_LIBS_INIT} # This should work on all platforms?
-    ${LIBARCHIVE_LIBRARIES}
+    ${LibArchive_LIBRARIES}
     ${CMAKE_DL_LIBS}) # On unix necessary sometimes
 
 # Reserver the translateLocally name for the MacOS and Windows (potentially) executables. Rename the unix executable to that
@@ -196,8 +196,8 @@ if(APPLE) # Apple specific installation of the app
   # Add the .app Target
   target_link_libraries(translateLocally PRIVATE ${LINK_LIBRARIES})
   # When on MacOS, we have a non-standard libarchive location because we get it via brew
-  target_include_directories(translateLocally-bin PRIVATE ${LIBARCHIVE_INCLUDE_DIR})
-  target_include_directories(translateLocally PRIVATE ${LIBARCHIVE_INCLUDE_DIR})
+  target_include_directories(translateLocally-bin PRIVATE ${LibArchive_INCLUDE_DIR})
+  target_include_directories(translateLocally PRIVATE ${LibArchive_INCLUDE_DIR})
   # produce .dmg
   include(macdeployqt)
   macdeployqt(translateLocally)
