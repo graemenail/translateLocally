@@ -94,7 +94,6 @@ jobs:
 
     steps:
     - name: Checkout
-      if: ${{ false }}
       uses: actions/checkout@v2
       with:
         submodules: recursive
