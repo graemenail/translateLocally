@@ -99,31 +99,22 @@ jobs:
       with:
         submodules: recursive
 
-    # - name: Download MKL
-    #   run: |
-    #     # Wget retries downloading files and is faster than Invoke-WebRequest
-    #     C:\msys64\usr\bin\wget.exe -nv ${{ env.MKL_URL }} -O mkl.zip
-    #     Expand-Archive -Force mkl.zip ${{ github.workspace }}\mkl
-    #     # Set MKLROOT environment variable so that CMake can find MKL
-    #     echo "MKLROOT=${{ github.workspace }}\mkl" | Out-File -FilePath $env:GITHUB_ENV  -Encoding utf8 -Append
-    #   shell: powershell
+    - name: Download MKL
+      run: |
+        # Wget retries downloading files and is faster than Invoke-WebRequest
+        C:\msys64\usr\bin\wget.exe -nv ${{ env.MKL_URL }} -O mkl.zip
+        Expand-Archive -Force mkl.zip ${{ github.workspace }}\mkl
+        # Set MKLROOT environment variable so that CMake can find MKL
+        echo "MKLROOT=${{ github.workspace }}\mkl" | Out-File -FilePath $env:GITHUB_ENV  -Encoding utf8 -Append
+      shell: powershell
 
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7.3
       with:
-#         vcpkgArguments: "protobuf pcre2 zlib libarchive qt5-base qt5[essentials] qt5-tools qt5-translations"
         setupOnly: true
         doNotCache: true
-        # vcpkgGitCommitId: 6185aa76504a5025f36754324abf307cc776f3da
-        # vcpkgGitCommitId: 44d94c2edbd44f0c01d66c2ad95eb6982a9a61bc
         vcpkgGitCommitId: ${{ env.VCPKG_SHA }}
         vcpkgDirectory: ${{ env.VCPKG_DIR }}
-        # vcpkgTriplet: x64-windows-static
-
-    # - name: Update ports
-    #   run: $VCPKG_ROOT/vcpkg update
-    #   shell: bash
-
 
     - name: Fetch NuGet
       run: echo "::set-output name=path::$($VCPKG_ROOT/vcpkg fetch nuget | tail -n1)"
@@ -154,21 +145,21 @@ jobs:
           ${{ env.VCPKG_ROOT }}\buildtrees\**\*.log
 
     # Windows CPU only minimal build
-    # - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
-    #   uses: lukka/run-cmake@main
-    #   with:
-    #     buildDirectory: ${{ github.workspace }}/build
-    #     cmakeAppendedArgs: '-G Ninja
-    #       -DCMAKE_BUILD_TYPE="Release"'
-    #     cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-    #     cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
-    #     useVcpkgToolchainFile: true
-    #     cmakeBuildType: Release
+    - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
+      uses: lukka/run-cmake@main
+      with:
+        buildDirectory: ${{ github.workspace }}/build
+        cmakeAppendedArgs: '-G Ninja
+          -DCMAKE_BUILD_TYPE="Release"'
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+        cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
+        useVcpkgToolchainFile: true
+        cmakeBuildType: Release
 
 
-    # - name: Print versions
-    #   working-directory: build/
-    #   run: ./translateLocally --version
-    #   shell: cmd
+    - name: Print versions
+      working-directory: build/
+      run: ./translateLocally --version
+      shell: cmd
 
 # https://github.com/microsoft/vcpkg/blob/master/docs/users/binarycaching.md#nuget-provider-configuration
