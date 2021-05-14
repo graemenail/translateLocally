@@ -8,7 +8,6 @@ env:
   VCPKG_SHA: "0bf3923f9fab4001c00f0f429682a0853b5749e0"
   VCPKG_DIR: C:\vcpkg
   VCPKG_BUILD_TYPE: "release"
-  VCPKG_APPLOCAL_DEPS: false
 
 jobs:
   build-deps:
@@ -150,7 +149,7 @@ jobs:
       with:
         buildDirectory: ${{ github.workspace }}/build
         cmakeAppendedArgs: '-G Ninja
-          -DCMAKE_BUILD_TYPE="Release"'
+          -DCMAKE_BUILD_TYPE="Release" -DVCPKG_APPLOCAL_DEPS=OFF'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
         useVcpkgToolchainFile: true
