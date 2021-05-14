@@ -161,7 +161,7 @@ jobs:
       with:
         name: logs-cmake-conf
         path: |
-          ${{ github.workspace }}/build/CMakeFiles/CMakeOutput.log
+          ${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
 
     - name: Upload cmake build log
       uses: actions/upload-artifact@v2
