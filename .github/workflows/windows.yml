@@ -155,13 +155,20 @@ jobs:
         useVcpkgToolchainFile: true
         cmakeBuildType: Release
 
-    - name: Upload logs
+    - name: Upload cmake conf log
       uses: actions/upload-artifact@v2
       if: ${{ always() }}
       with:
-        name: logs-cmake
+        name: logs-cmake-conf
         path: |
-          ${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
+          ${{ github.workspace }}/build/CMakeFiles/CMakeOutput.log
+
+    - name: Upload cmake build log
+      uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: logs-cmake-build
+        path: |
           ${{ github.workspace }}/build/CMakeFiles/CMakeOutput.log
 
     - name: Print versions
