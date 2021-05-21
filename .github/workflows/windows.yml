@@ -149,7 +149,7 @@ jobs:
       with:
         buildDirectory: ${{ github.workspace }}/build
         cmakeAppendedArgs: '-G Ninja
-          -DCMAKE_BUILD_TYPE="Release" -DVCPKG_APPLOCAL_DEPS=OFF'
+          -DCMAKE_BUILD_TYPE="Release" -DVCPKG_APPLOCAL_DEPS=OFF -DCMAKE_FIND_DEBUG_MODE=ON'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
         useVcpkgToolchainFile: true
