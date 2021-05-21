@@ -149,7 +149,13 @@ jobs:
       with:
         buildDirectory: ${{ github.workspace }}/build
         cmakeAppendedArgs: '-G Ninja
-          -DCMAKE_BUILD_TYPE="Release" -DVCPKG_APPLOCAL_DEPS=OFF -DCMAKE_FIND_DEBUG_MODE=ON -DVCPKG_TARGET_TRIPLET=x64-windows-static'
+          -DCMAKE_BUILD_TYPE="Release"
+          -DVCPKG_APPLOCAL_DEPS=OFF
+          -DCMAKE_FIND_DEBUG_MODE=ON
+          -DVCPKG_TARGET_TRIPLET=x64-windows-static
+          -DVERBOSE_CONFIGURE=ON
+          -DCMAKE_CXX_COMPILER=cl
+          -DCMAKE_C_COMPILER=cl'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
         useVcpkgToolchainFile: true
