@@ -143,8 +143,8 @@ jobs:
         path: |
           ${{ env.VCPKG_ROOT }}\buildtrees\**\*.log
 
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.1
+    # - name: Add msbuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.1
 
     # Windows CPU only minimal build
     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
@@ -157,8 +157,8 @@ jobs:
           -DCMAKE_FIND_DEBUG_MODE=ON
           -DVCPKG_TARGET_TRIPLET=x64-windows-static
           -DVERBOSE_CONFIGURE=ON
-          -DCMAKE_CXX_COMPILER=cl
-          -DCMAKE_C_COMPILER=cl'
+          -DCMAKE_CXX_COMPILER=cl.exe
+          -DCMAKE_C_COMPILER=cl.exe'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
         useVcpkgToolchainFile: true
