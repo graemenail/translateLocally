@@ -154,8 +154,8 @@ jobs:
           -DCMAKE_FIND_DEBUG_MODE=ON
           -DVCPKG_TARGET_TRIPLET=x64-windows-static
           -DVERBOSE_CONFIGURE=ON
-          -DCMAKE_CXX_COMPILER=cl
-          -DCMAKE_C_COMPILER=cl'
+          -DCMAKE_CXX_COMPILER=C:/vcpkg/installed/x64-windows-static/bin/cl
+          -DCMAKE_C_COMPILER=C:/vcpkg/installed/x64-windows-static/bin/cl'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
         useVcpkgToolchainFile: true
