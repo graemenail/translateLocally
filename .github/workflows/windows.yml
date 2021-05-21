@@ -146,6 +146,10 @@ jobs:
     # - name: Add msbuild to PATH
     #   uses: microsoft/setup-msbuild@v1.0.1
 
+    - name: vcpkg env
+      run: $VCPKG_ROOT/vcpkg env
+      shell: bash
+
     # Windows CPU only minimal build
     - name: Build Release # @TODO this is actually a debug build until the ninja generator gets fixed
       uses: lukka/run-cmake@main
