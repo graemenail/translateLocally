@@ -161,8 +161,8 @@ jobs:
           -DCMAKE_FIND_DEBUG_MODE=ON
           -DVCPKG_TARGET_TRIPLET=x64-windows-static
           -DVERBOSE_CONFIGURE=ON
-          -DCMAKE_CXX_COMPILER=cl.exe
-          -DCMAKE_C_COMPILER=cl.exe'
+          -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29910/bin/Hostx64/x64/cl.exe"
+          -DCMAKE_C_COMPILER="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29910/bin/Hostx64/x64/cl.exe"'
         cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
         cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
         useVcpkgToolchainFile: true
